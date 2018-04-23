@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -40,20 +40,23 @@ public class CrimeListFragment extends Fragment {
     private class CrimeHolder extends RecyclerView.ViewHolder {
         private TextView mTitleTextView;
         private TextView mDateTextView;
-        private CheckBox mSolvedCheckBox;
+        private ImageView mSolvedImageView;
         private Crime mCrime;
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
-            super(inflater.inflate(viewType==0?R.layout.list_item_crime0:R.layout.list_item_crime1, parent, false));
+            super(inflater.inflate(R.layout.list_item_crime, parent, false));
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
-            if(viewType==1) mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_solved);
+            mSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
+
         }
         public void bind(Crime crime) {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
-            if(mCrime.isSolved()) mSolvedCheckBox.setChecked(true);
+            mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE :
+                    View.GONE);
+
         }
     }
     //субкласс
