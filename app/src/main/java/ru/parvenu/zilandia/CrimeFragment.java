@@ -1,6 +1,8 @@
 package ru.parvenu.zilandia;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -16,18 +18,35 @@ import android.widget.EditText;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
+    private static final String ARG_CRIME_ID = "crime_id";
+    private static final String ARG_CRIME_POS = "crime_pos";
+    private final String EXTRA_CRIME_POS =
+            "ru.parvenu.android.zilandia.crime_pos";
+
     private Crime mCrime;
+    private int crimePos;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+
+    public static CrimeFragment newInstance(UUID crimeId, int pos) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, crimeId);
+        args.putSerializable(ARG_CRIME_POS, pos);
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //mCrime = new Crime();
-        UUID crimeId = (UUID) getActivity().getIntent()
-                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID);
+       // UUID crimeId = (UUID) getActivity().getIntent().getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID);
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        crimePos = (int) getArguments().getInt(ARG_CRIME_POS);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+        //mCrime = CrimeLab.get(getActivity()).getCrimeByPos(crimePos);
     }
 
     @Override
@@ -66,5 +85,11 @@ public class CrimeFragment extends Fragment {
         });
 
         return v;
+    }
+    public void returnResult() {
+
+        Intent data = new Intent();
+        data.putExtra(EXTRA_CRIME_POS, crimePos);
+        getActivity().setResult(Activity.RESULT_OK, data);
     }
 }

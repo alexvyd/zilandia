@@ -16,9 +16,13 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.util.List;
 
+import static ru.parvenu.zilandia.CrimeActivity.getPos;
+
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private static final int REQUEST_CRIME = 1;
+    private int mPos;
 
 
     @Override
@@ -33,11 +37,23 @@ public class CrimeListFragment extends Fragment {
         updateUI();
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        } else {
+            //mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(mPos);
+        }
     }
     //субкласс
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -60,12 +76,13 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View view) {
             //Toast.makeText(getActivity(),mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
             //Intent intent = new Intent(getActivity(), CrimeActivity.class);
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId(), mPos);
+            startActivityForResult(intent, REQUEST_CRIME);
         }
 
-        public void bind(Crime crime) {
+        public void bind(Crime crime, int pos) {
             mCrime = crime;
+            mPos = pos;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(DateFormat.getDateTimeInstance().format(mCrime.getDate()));
             mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE :
@@ -73,6 +90,17 @@ public class CrimeListFragment extends Fragment {
 
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CRIME) {
+            if (data == null) {
+                return;
+            }
+            mPos = getPos(data); //метод CrimeActivity
+        }
+    }
+
     //субкласс
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
         private List<Crime> mCrimes;
@@ -91,7 +119,7 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder holder, int position) {
             Crime crime = mCrimes.get(position);
-            holder.bind(crime);
+            holder.bind(crime, position);
         }
 
         @Override
