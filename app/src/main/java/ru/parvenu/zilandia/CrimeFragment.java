@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,8 +21,9 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String ARG_CRIME_POS = "crime_pos";
-    private final String EXTRA_CRIME_POS =
-            "ru.parvenu.android.zilandia.crime_pos";
+    private static final String EXTRA_CRIME_POS =
+            "ru.parvenu.zilandia.crime_pos";
+    private static final String DIALOG_DATE = "DialogDate";
 
     private Crime mCrime;
     private int crimePos;
@@ -32,7 +34,7 @@ public class CrimeFragment extends Fragment {
     public static CrimeFragment newInstance(UUID crimeId, int pos) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
-        args.putSerializable(ARG_CRIME_POS, pos);
+        args.putInt(ARG_CRIME_POS, pos);
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
         return fragment;
@@ -73,7 +75,14 @@ public class CrimeFragment extends Fragment {
 
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         mDateButton.setText(mCrime.getDate().toString());
-        mDateButton.setEnabled(false);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(manager, DIALOG_DATE);
+            }
+        });
 
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
@@ -86,8 +95,9 @@ public class CrimeFragment extends Fragment {
 
         return v;
     }
-    public void returnResult() {
-
+    @Override
+    public void onStop() {
+        super.onStop();
         Intent data = new Intent();
         data.putExtra(EXTRA_CRIME_POS, crimePos);
         getActivity().setResult(Activity.RESULT_OK, data);

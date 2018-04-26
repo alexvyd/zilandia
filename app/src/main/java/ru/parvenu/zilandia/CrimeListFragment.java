@@ -22,7 +22,7 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private static final int REQUEST_CRIME = 1;
-    private int mPos;
+    private int mPos; //позиция элемента во view-группе
 
 
     @Override
@@ -76,7 +76,8 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View view) {
             //Toast.makeText(getActivity(),mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
             //Intent intent = new Intent(getActivity(), CrimeActivity.class);
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId(), mPos);
+            //Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId(), mPos);
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId(), mPos);
             startActivityForResult(intent, REQUEST_CRIME);
         }
 
