@@ -9,17 +9,28 @@
     android:id="@+id/linearLayout">
 
     <TextView
+        android:id="@+id/crime_pos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Pos"
+        app:layout_constraintBottom_toTopOf="@+id/crime_date"
+        app:layout_constraintEnd_toStartOf="@+id/crime_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/crime_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Crime Title"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/crime_solved"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/crime_pos"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_conversion_absoluteHeight="19dp"
         tools:layout_conversion_absoluteWidth="68dp" />

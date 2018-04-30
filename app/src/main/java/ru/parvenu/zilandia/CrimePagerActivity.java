@@ -16,15 +16,15 @@ public class CrimePagerActivity extends AppCompatActivity {
     private static final String EXTRA_CRIME_ID =
             "ru.parvenu.zilandia.crime_id";
     private static final String EXTRA_CRIME_POS =
-            "ru.parvenu.zilandia.crime_pos";
+            "ru.parvenu.zilandia.crime_listpos";
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
 
-    public static Intent newIntent(Context packageContext, UUID crimeId, int pos) {
+    public static Intent newIntent(Context packageContext, UUID crimeId, int listpos) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
-        intent.putExtra(EXTRA_CRIME_POS, pos);
+        intent.putExtra(EXTRA_CRIME_POS, listpos);
         return intent;
     }
 
@@ -35,7 +35,7 @@ public class CrimePagerActivity extends AppCompatActivity {
 
         UUID crimeId = (UUID) getIntent()
                 .getSerializableExtra(EXTRA_CRIME_ID);
-        int pos = (int) getIntent()
+        final int listpos = (int) getIntent()
                 .getIntExtra(EXTRA_CRIME_POS,0);
 
         mViewPager = (ViewPager) findViewById(R.id.crime_view_pager);
@@ -46,7 +46,7 @@ public class CrimePagerActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 Crime crime = mCrimes.get(position);
-                return CrimeFragment.newInstance(crime.getId(), position);
+                return CrimeFragment.newInstance(crime.getId(), listpos, position);
             }
 
             @Override

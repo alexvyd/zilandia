@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Zilandia</string>
-    <string name="crime_title_hint">Enter a title for the crime.</string>
-    <string name="crime_title_label">Title</string>
-    <string name="crime_details_label">Details</string>
+    <string name="crime_title_hint">Введите заголовок трека</string>
+    <string name="crime_title_label">Титул</string>
+    <string name="crime_details_label">Детали</string>
     <string name="crime_solved_label">Решено</string>
     <string name="date_picker_title">Дата события:</string>
+    <string name="new_crime">Добавить</string>
+    <string name="show_subtitle">Показать инфо</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Удалить</string>
+    <string name="hide_subtitle">Скрыть инфо</string>
+    <string name="subtitle_format">%1$d треков</string>
+    <string name="subtitle_crime">%1$d - %2$d</string>
 </resources>
